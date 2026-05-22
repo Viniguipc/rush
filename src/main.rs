@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::io::{self, Write};
 use std::process::{self,Command};
 use std::env;
@@ -29,7 +30,7 @@ fn indentificar_comando(input: &str) {
 	
 	match comando{
 		"exit" | "quit" => exit(),
-		"cd" => cd(),
+		"cd" => cd(fragmentos),
 		
 		_ => comando_externo(comando, fragmentos),
 	}
@@ -40,8 +41,24 @@ fn exit() {
 	process::exit(0);
 }
 
-fn cd(){
-	println!("CD...");
+fn cd(mut argumentos: std::str::SplitWhitespace){
+	let destino = argumentos.next();
+	
+	match destino {
+		Some(pasta) => {
+            // Converte a string pura para um formato de Caminho (Path) do SO
+            let caminho = Path::new(pasta);
+            
+            // Tenta alterar o diretório do processo atual
+            if let Err(erro) = env::set_current_dir(&caminho) {
+                // Se der erro (ex: pasta não existe ou sem permissão), avisamos o usuário
+                println!("Rush: cd: {}: {}", pasta, erro);
+            }
+        }
+		None => {
+			println!("Rush: erro: faltou o diretório de destino");
+		}
+	}
 }
 
 fn comando_externo(comando: &str, argumentos: std::str::SplitWhitespace){
