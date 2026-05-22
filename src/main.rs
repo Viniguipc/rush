@@ -1,11 +1,15 @@
 use std::io::{self, Write};
+use std::env;
 
 fn main() {
 	let mut input = String::new();
+	
 	println!("Rush");
 	
     loop{
-        print!("~/rush > ");
+		let dir_atual = env::current_dir().unwrap();
+		
+        print!("{} > ", dir_atual.display());
         io::stdout().flush().unwrap();
         
         input.clear();
