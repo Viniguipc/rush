@@ -1,5 +1,5 @@
 use std::io::{self, Write};
-use std::process;
+use std::process::{self,Command};
 use std::env;
 
 fn main() {
@@ -31,7 +31,7 @@ fn indentificar_comando(input: &str) {
 		"exit" | "quit" => exit(),
 		"cd" => cd(),
 		
-		_ => erro(),
+		_ => comando_externo(comando, fragmentos),
 	}
 }
 
@@ -44,6 +44,19 @@ fn cd(){
 	println!("CD...");
 }
 
-fn erro(){
-	println!("Comando Inexistente...");
+fn comando_externo(comando: &str, argumentos: std::str::SplitWhitespace){
+	let executar = Command::new(comando)
+		.args(argumentos)
+		.status();
+		
+	match executar {
+		Ok(status) => {
+			if !status.success() {
+                println!("Comando falhou com código: {}", status.code().unwrap_or(1));
+            }
+		}
+		Err(_) => {
+			println!("Rush: comando não encontrado: {}", comando);
+		}
+	}
 }
