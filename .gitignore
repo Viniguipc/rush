@@ -1,0 +1,12 @@
+# Arquivos de compilação do Rust (Você já tem esse!)
+/target
+
+# Backups gerados pelo formatador de código do Rust (rustfmt)
+**/*.rs.bk
+
+# Se você usar o VS Code
+.vscode/
+
+# Se você usar o IntelliJ / CLion
+.idea/
+*.iml
