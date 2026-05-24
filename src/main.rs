@@ -1,6 +1,6 @@
-use std::path::Path;
-use std::io::{self, Write};
-use std::process::{self,Command};
+use std::path::Path; //Importa a biblioteca path 
+use std::io::{self, Write}; //Imparta a biblioteca I/O com as funções Write para imprimir instantaneamente no terminal
+use std::process::{self,Command}; //Importa a biblioteca de process pra enviar um comando pro OS e retornar o resultado
 use std::env;
 
 fn main() {
@@ -31,6 +31,7 @@ fn indentificar_comando(input: &str) {
 	match comando{
 		"exit" | "quit" => exit(),
 		"cd" => cd(fragmentos),
+		"run" => run(fragmentos);
 		
 		_ => comando_externo(comando, fragmentos),
 	}
@@ -76,4 +77,14 @@ fn comando_externo(comando: &str, argumentos: std::str::SplitWhitespace){
 			println!("Rush: comando não encontrado: {}", comando);
 		}
 	}
+}
+
+fn run(mut argumentos: std::str::SplitWhitespace){
+	let arquivo = match argumentos.next(){
+		some(arq) => arq,
+		none => {
+			println!("Rush: uso correto: run <arquivo> (ex: run main.c)");
+			return;
+		}
+	};
 }
