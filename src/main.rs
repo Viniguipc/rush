@@ -87,4 +87,17 @@ fn run(mut argumentos: std::str::SplitWhitespace){
 			return;
 		}
 	};
+	
+	let caminho = Path::new(arquivo);
+	
+	let extensao = caminho.extension().and_then(|e| e.to_str()).unwrap_or("");
+	let nome_base = caminho.file_stem().and_then(|n| n.to_str()).unwrap_or("programa");
+	
+	match extensao {
+		"c" => run_c(nome_base),
+		
+		"" => println!("Rush: O arquivo não tem extensão. Não sei como rodar!"),
+        _ => println!("Rush: Extensão '.{}' ainda não suportada pelo comando run.", extensao),
+	}
+	
 }
