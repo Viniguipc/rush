@@ -101,3 +101,6 @@ fn run(mut argumentos: std::str::SplitWhitespace){
 	}
 	
 }
+
+fn run_c(nome: &str){
+}
